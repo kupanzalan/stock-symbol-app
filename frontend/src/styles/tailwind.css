@@ -1,0 +1,17 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer utilities {
+  .bg-my-cool-color {
+    background-color: #f9ebe9; /* Replace with your desired color code */
+  }
+
+  .my-button-color {
+    background-color: #a67e78;
+  }
+
+  .my-hover-color {
+    background-color: #a67e90;
+  }
+}

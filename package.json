@@ -1,0 +1,19 @@
+{
+  "name": "peak-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/cli": "^10.3.2",
+    "@nestjs/core": "^10.3.3",
+    "axios": "^1.6.7",
+    "node-cron": "^3.0.3",
+    "typescript": "^5.3.3"
+  }
+}
