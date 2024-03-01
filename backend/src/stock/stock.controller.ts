@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Put } from '@nestjs/common';
+import { Controller, Get, Param, Put, HttpException, HttpStatus } from '@nestjs/common';
 import { StockService } from './stock.service';
 
 @Controller('/stock')
@@ -8,13 +8,21 @@ export class StockController {
   @Get('/:symbol')
   async getStockInfo(@Param('symbol') symbol: string) {
     console.log('GET /symbol');
-    const stockInfo = await this.stockService.currentStockPrice(symbol);
-    return stockInfo;
+    try {
+      const stockInfo = await this.stockService.currentStockPrice(symbol);
+      return stockInfo;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
   }
 
   @Put('/:symbol')
   async startPeriodicChecks(@Param('symbol') symbol: string) {
     console.log('PUT /symbol');
-    return this.stockService.addSymbolToTrack(symbol);
+    try {
+      return this.stockService.addSymbolToTrack(symbol);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
   }
 }

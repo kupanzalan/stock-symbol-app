@@ -8,6 +8,7 @@ const Main = () => {
   const [trackingSymbol, setTrackingSymbol] = useState('');
   const [stockInfo, setStockInfo] = useState(null);
   const [error, setError] = useState(null);
+  const [symbolToTrack, setSymbolToTrack] = useState(null);
 
   const handleSymbolChange = (e) => {
     setSymbol(e.target.value);
@@ -23,14 +24,17 @@ const Main = () => {
       setError('Field can not be empty.');
       return;
     }
-
     try {
       const response = await axios.get(`http://localhost:3000/stock/${symbol}`);
       setStockInfo(response.data);
       setError(null);
     } catch (error) {
       console.error(`Error fetching stock information: ${error}`);
-      setError('Error fetching stock information. Please try again.');
+      if (error.response && error.response.status === 404) {
+        setError('Stock symbol not found.');
+      } else {
+        setError('Error fetching stock information. Please try again.');
+      }
     }
   }
 
@@ -39,13 +43,17 @@ const Main = () => {
       setError('Field can not be empty.');
       return;
     }
-
     try {
       await axios.put(`http://localhost:3000/stock/${trackingSymbol}`);
       setError(null);
+      setSymbolToTrack(trackingSymbol);
     } catch (error) {
       console.error(`Error starting tracking: ${error}`);
-      setError('Error starting tracking. Please try again.');
+      if (error.response && error.response.status === 404) {
+        setError('Stock symbol not found.');
+      } else {
+        setError('Error fetching stock information. Please try again.');
+      }
     }
   };
 
@@ -65,12 +73,12 @@ const Main = () => {
       </div>
       <form
         onSubmit={handleFormSubmit}
-        className="p-7 mt-8 w-full max-w-md bg-my-cool-color flex flex-col gap-3 glassmorphism ustify-center items-center">
+        className="p-7 mt-8 w-full max-w-md bg-my-cool-color flex flex-col gap-2 glassmorphism ustify-center items-center">
         <label>
           <span className="font-satoshi text-xl text-slate-900">{texts.symbolName}</span>
         </label>
         <input 
-          className="p-3 m-2 h-8 rounded-md" 
+          className="p-3 m-2 h-8 rounded-md uppercase" 
           type="text"
           value={symbol}
           onChange={handleSymbolChange} 
@@ -84,7 +92,7 @@ const Main = () => {
           <span className="font-satoshi text-xl text-slate-900">{texts.trackingSymbol}</span>
         </label>
         <input
-          className="p-3 m-2 h-8 rounded-md"
+          className="p-3 m-2 h-8 rounded-md uppercase"
           type="text"
           value={trackingSymbol}
           onChange={handleTrackingSymbolChange}
@@ -101,8 +109,18 @@ const Main = () => {
         {error && <p className="text-red-500">{error}</p>}
       </form>
 
+      {symbolToTrack && (
+        <div className="flex mt-8 mb-8">
+          <div className="mr-8 font-satoshi text-2xl text-slate-900">
+            <p>{texts.currentlyTracking}</p>
+          </div>
+          <div className="font-satoshi text-2xl text-slate-900">
+            <p className="uppercase">{symbolToTrack}</p>
+          </div>
+        </div>
+      )}
       {stockInfo && (
-        <div className="flex mt-8">
+        <div className="flex mb-8">
         <div className="mr-8 font-satoshi text-2xl text-slate-900">
           <p>{texts.symbol}</p>
           <p>{texts.currentPrice}</p>
@@ -110,7 +128,7 @@ const Main = () => {
           <p>{texts.movingAverage}</p>
         </div>
         <div className="font-satoshi text-2xl text-slate-900">
-          <p>{stockInfo.symbol}</p>
+          <p className="uppercase">{stockInfo.symbol}</p>
           <p>{stockInfo.currentPrice}$</p>
           <p>{formatTimestamp(stockInfo.lastUpdatedTime)}</p>
           <p>{stockInfo.movingAverage.toFixed(3)}$</p>

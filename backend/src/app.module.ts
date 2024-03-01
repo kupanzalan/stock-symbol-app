@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { StockModule } from './stock/stock.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { MyConfigModule } from './config/config.module';
 
 @Module({
   imports: [
-    StockModule
+    StockModule, 
+    MyConfigModule
   ],
   controllers: [AppController],
   providers: [AppService],

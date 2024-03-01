@@ -21,12 +21,22 @@ let StockController = class StockController {
     }
     async getStockInfo(symbol) {
         console.log('GET /symbol');
-        const stockInfo = await this.stockService.currentStockPrice(symbol);
-        return stockInfo;
+        try {
+            const stockInfo = await this.stockService.currentStockPrice(symbol);
+            return stockInfo;
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.NOT_FOUND);
+        }
     }
     async startPeriodicChecks(symbol) {
         console.log('PUT /symbol');
-        return this.stockService.addSymbolToTrack(symbol);
+        try {
+            return this.stockService.addSymbolToTrack(symbol);
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.NOT_FOUND);
+        }
     }
 };
 exports.StockController = StockController;

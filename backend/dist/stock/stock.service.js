@@ -39,46 +39,66 @@ exports.StockService = void 0;
 const common_1 = require("@nestjs/common");
 const axios_1 = __importDefault(require("axios"));
 const cron = __importStar(require("node-cron"));
+const config_1 = require("@nestjs/config");
 let StockService = class StockService {
-    constructor() {
-        this.apiKey = 'ciqlqj9r01qjff7cr300ciqlqj9r01qjff7cr30g';
+    constructor(configService) {
+        this.configService = configService;
         this.symbolsToTrack = [];
         this.currentSymbolHistorical = '';
         this.stockData = {};
         this.movingAverage = 0;
         this.cronJobInitialized = false;
+        this.apiKey = this.configService.get('API_KEY');
     }
     addSymbolToTrack(symbol) {
-        console.log('Tracking symbols');
-        if (!this.symbolsToTrack.includes(symbol)) {
-            this.symbolsToTrack.push(symbol);
+        try {
+            if (!this.symbolsToTrack.includes(symbol)) {
+                this.symbolsToTrack.push(symbol);
+            }
+            this.currentSymbolHistorical = symbol;
+            if (!this.cronJobInitialized && this.symbolsToTrack.length > 0) {
+                this.initializeCronJob();
+                this.cronJobInitialized = true;
+            }
         }
-        this.currentSymbolHistorical = symbol;
-        console.log('Most recent symbol to calculate: ', symbol);
-        if (!this.cronJobInitialized && this.symbolsToTrack.length > 0) {
-            this.initializeCronJob();
-            this.cronJobInitialized = true;
+        catch (error) {
+            console.error(`An error occurred while adding symbol to track: ${error}`);
+            throw error;
         }
     }
+    processCronJob() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (this.currentSymbolHistorical) {
+                    await this.saveStockPrice(this.currentSymbolHistorical);
+                    resolve(undefined);
+                }
+                else {
+                    reject(new Error('Invalid symbol'));
+                }
+            }
+            catch (error) {
+                console.error(`An error occurred in cron job: ${error}`);
+                reject(error);
+            }
+        });
+    }
     initializeCronJob() {
-        cron.schedule('*/3 * * * * *', () => {
-            console.log('Still goiing with: ', this.currentSymbolHistorical);
-            if (this.currentSymbolHistorical) {
-                this.saveStockPrice(this.currentSymbolHistorical);
+        cron.schedule('* * * * *', async () => {
+            try {
+                await this.processCronJob();
+            }
+            catch (error) {
+                console.error(`An error occurred in cron job scheduling: ${error}`);
             }
         });
     }
     async currentStockPrice(symbol) {
-        console.log('\n');
-        console.log('Current stock prices... for the symbol of ----------: ', symbol);
-        console.log('\n');
         try {
             const response = await this.getStockInfo(symbol);
-            console.log('Axios Response:', response);
             const { c: currentPrice, t: lastUpdatedTime } = response;
             if (this.stockData.hasOwnProperty(symbol) && this.stockData[symbol]?.length >= 10) {
                 this.movingAverage = this.calculateMovingAverage(this.stockData[symbol]);
-                console.log('Moving Average:', this.movingAverage);
             }
             else {
                 this.movingAverage = 0;
@@ -96,9 +116,6 @@ let StockService = class StockService {
         }
     }
     async saveStockPrice(symbol) {
-        console.log('\n');
-        console.log('Saving stock prices... fooooooor: ', symbol);
-        console.log('\n');
         try {
             const response = await this.getStockInfo(symbol);
             const { c: currentPrice, t: lastUpdatedTime } = response;
@@ -109,13 +126,7 @@ let StockService = class StockService {
             if (this.stockData[symbol].length > 10) {
                 this.stockData[symbol].shift();
                 this.movingAverage = this.calculateMovingAverage(this.stockData[symbol]);
-                console.log('Moving Average:', this.movingAverage);
             }
-            console.log('\n');
-            console.log('Historical prices: ', this.stockData);
-            console.log('Current symbol: ', symbol);
-            console.log('Current symbols to track: ', this.symbolsToTrack);
-            console.log('\n');
         }
         catch (error) {
             console.error(`An error occurred while saving stock: ${error}`);
@@ -123,7 +134,6 @@ let StockService = class StockService {
         }
     }
     async getStockInfo(symbol) {
-        console.log('Getting stock info...');
         try {
             const response = await axios_1.default.get('https://finnhub.io/api/v1/quote', {
                 params: {
@@ -131,17 +141,22 @@ let StockService = class StockService {
                     token: this.apiKey,
                 },
             });
+            if (response.data.c === 0 && response.data.t === 0) {
+                throw new Error(`Invalid symbol: ${symbol}`);
+            }
             return response.data;
         }
         catch (error) {
             console.error(`An error occured while fetching stock: ${error}`);
-            throw error;
+            if (axios_1.default.isAxiosError(error) && error.response?.status === 403) {
+                throw new Error(`Access denied. Please check your API key or permissions.`);
+            }
+            else {
+                throw new Error(`An error occurred while fetching stock.`);
+            }
         }
     }
     calculateMovingAverage(prices) {
-        console.log('\n');
-        console.log('Calculating moving average using: ', prices);
-        console.log('\n');
         if (prices.length === 0) {
             return 0;
         }
@@ -152,6 +167,6 @@ let StockService = class StockService {
 exports.StockService = StockService;
 exports.StockService = StockService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [config_1.ConfigService])
 ], StockService);
 //# sourceMappingURL=stock.service.js.map

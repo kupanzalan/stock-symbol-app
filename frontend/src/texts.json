@@ -1,7 +1,7 @@
 {
   "stockSymbolGetter": "Stock symbol getter", 
   "usageInfo": "Insert any official NASDAQ stock symbol to find out the current price and the moving average.", 
-  "noteInfo": "(Note: The moving average can only be calculated after 10 minutes, because the server periodically asks for the current price, and we need 10 pieces of data)", 
+  "noteInfo": "Note: The moving average is calculated after collecting data for 10 minutes. The server periodically retrieves the current price, and we need 10 data points to calculate the moving average.", 
   "symbolName": "Symbol name", 
   "check": "Check",
   "trackingSymbol": "Tracking symbol", 
@@ -9,5 +9,6 @@
   "symbol": "Symbol: ", 
   "currentPrice": "Current Price: ",
   "lastUpdatedTime": "Last Updated Time: ", 
-  "movingAverage": "Moving Average: "
+  "movingAverage": "Moving Average: ", 
+  "currentlyTracking": "Currently tracking: "
 }
