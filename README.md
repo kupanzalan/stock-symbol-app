@@ -12,11 +12,15 @@ Stock Price Chart: A responsive chart that shows the historical price of the sto
 Navigate to the project folder and install the necessary dependencies:
 
 For the frontend:
+
 `cd frontend`
+
 `npm install`
 
 For the backend:
+
 `cd backend`
+
 `npm install`
 
 ### 2. Start the Backend
