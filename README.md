@@ -14,6 +14,7 @@ Navigate to the project folder and install the necessary dependencies:
 For the frontend:
 `cd frontend
 npm install`
+
 For the backend:
 `cd backend
 npm install`
