@@ -7,6 +7,34 @@ Stock Symbol Search: Enter a stock symbol to retrieve and track its current pric
 
 Stock Price Chart: A responsive chart that shows the historical price of the stock.
 
-Dynamic UI: A clean, responsive design that displays the stock information and chart, which updates as you search for different stocks.
+How to Run:
+1. Install Dependencies
+Navigate to the project folder and install the necessary dependencies:
 
-Customizable and User-Friendly: Tailored to offer both an aesthetically pleasing and functional experience with easy-to-read data and interactive elements.
+For the frontend:
+cd frontend
+npm install
+For the backend:
+cd backend
+npm install
+
+2. Start the Backend
+To start the backend server in development mode, run:
+npm run start:dev
+3. Start the Frontend
+In a separate terminal, start the frontend application:
+npm start
+The app will be available at http://localhost:3000.
+
+Usage:
+Track a Stock Symbol:
+
+On the home page, enter the stock symbol you want to track in the input box.
+
+Click "Track" to see live data about the stock, including current price, moving average, and other information.
+
+The app will display the stock price chart, which updates as you track different stocks.
+
+Chart Interaction:
+
+Hover over data points on the chart to get more detailed information about the stock's price at that specific moment.
