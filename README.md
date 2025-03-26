@@ -22,9 +22,11 @@ npm install`
 ### 2. Start the Backend
 To start the backend server in development mode, run:
 `npm run start:dev`
-3. Start the Frontend
+
+### 3. Start the Frontend
 In a separate terminal, start the frontend application:
 `npm start`
+
 The app will be available at http://localhost:3000.
 
 ## Usage:
