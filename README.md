@@ -8,26 +8,25 @@ Stock Symbol Search: Enter a stock symbol to retrieve and track its current pric
 Stock Price Chart: A responsive chart that shows the historical price of the stock.
 
 ## How to Run:
-1. Install Dependencies
+### 1. Install Dependencies
 Navigate to the project folder and install the necessary dependencies:
 
 For the frontend:
-```bash
-cd frontend
-npm install
+`cd frontend
+npm install`
 For the backend:
-cd backend
-npm install
+`cd backend
+npm install`
 
-2. Start the Backend
+### 2. Start the Backend
 To start the backend server in development mode, run:
-npm run start:dev
+`npm run start:dev`
 3. Start the Frontend
 In a separate terminal, start the frontend application:
-npm start
+`npm start`
 The app will be available at http://localhost:3000.
 
-Usage:
+## Usage:
 Track a Stock Symbol:
 
 On the home page, enter the stock symbol you want to track in the input box.
