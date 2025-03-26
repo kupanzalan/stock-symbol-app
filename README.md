@@ -7,11 +7,12 @@ Stock Symbol Search: Enter a stock symbol to retrieve and track its current pric
 
 Stock Price Chart: A responsive chart that shows the historical price of the stock.
 
-How to Run:
+## How to Run:
 1. Install Dependencies
 Navigate to the project folder and install the necessary dependencies:
 
 For the frontend:
+```bash
 cd frontend
 npm install
 For the backend:
