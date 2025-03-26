@@ -156,6 +156,19 @@ let StockService = class StockService {
             }
         }
     }
+    async getStockPriceHistory(symbol) {
+        try {
+            const response = await axios_1.default.get(`https://api.example.com/stock/${symbol}/history`);
+            console.log('History data from third-party API:', response.data);
+            return response.data.map(item => ({
+                date: item.date,
+                price: item.price
+            }));
+        }
+        catch (error) {
+            throw new Error('Error fetching stock history');
+        }
+    }
     calculateMovingAverage(prices) {
         if (prices.length === 0) {
             return 0;

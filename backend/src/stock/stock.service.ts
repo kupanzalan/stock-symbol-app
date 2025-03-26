@@ -126,6 +126,21 @@ export class StockService {
     }
   }
 
+  // Fetch historical stock prices (for example, for the last 7 days)
+  async getStockPriceHistory(symbol: string) {
+    try {
+      const response = await axios.get(`https://api.example.com/stock/${symbol}/history`);
+      console.log('History data from third-party API:', response.data);
+      // Return the data in the desired format for your frontend (e.g., date and price)
+      return response.data.map(item => ({
+        date: item.date, // assuming `date` and `price` are part of the API response
+        price: item.price
+      }));
+    } catch (error) {
+      throw new Error('Error fetching stock history');
+    }
+  }
+
   private calculateMovingAverage(prices: number[]): number {
     if (prices.length === 0) {
       return 0;

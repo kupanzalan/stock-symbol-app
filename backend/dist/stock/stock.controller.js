@@ -29,6 +29,17 @@ let StockController = class StockController {
             throw new common_1.HttpException(error.message, common_1.HttpStatus.NOT_FOUND);
         }
     }
+    async getStockPriceHistory(symbol) {
+        console.log('GET /stock/history');
+        try {
+            const history = await this.stockService.getStockPriceHistory(symbol);
+            console.log('History:', history);
+            return history;
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.NOT_FOUND);
+        }
+    }
     async startPeriodicChecks(symbol) {
         console.log('PUT /symbol');
         try {
@@ -47,6 +58,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], StockController.prototype, "getStockInfo", null);
+__decorate([
+    (0, common_1.Get)('/history/:symbol'),
+    __param(0, (0, common_1.Param)('symbol')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], StockController.prototype, "getStockPriceHistory", null);
 __decorate([
     (0, common_1.Put)('/:symbol'),
     __param(0, (0, common_1.Param)('symbol')),

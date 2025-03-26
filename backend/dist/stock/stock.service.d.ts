@@ -19,5 +19,6 @@ export declare class StockService {
     }>;
     private saveStockPrice;
     getStockInfo(symbol: string): Promise<any>;
+    getStockPriceHistory(symbol: string): Promise<any>;
     private calculateMovingAverage;
 }

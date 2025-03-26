@@ -16,6 +16,18 @@ export class StockController {
     }
   }
 
+  @Get('/history/:symbol')
+  async getStockPriceHistory(@Param('symbol') symbol: string) {
+    console.log('GET /stock/history');
+    try {
+      const history = await this.stockService.getStockPriceHistory(symbol);
+      console.log('History:', history);
+      return history;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
+  }
+
   @Put('/:symbol')
   async startPeriodicChecks(@Param('symbol') symbol: string) {
     console.log('PUT /symbol');

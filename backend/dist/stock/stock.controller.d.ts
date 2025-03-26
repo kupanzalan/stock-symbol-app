@@ -8,5 +8,6 @@ export declare class StockController {
         lastUpdatedTime: Date;
         movingAverage: number;
     }>;
+    getStockPriceHistory(symbol: string): Promise<any>;
     startPeriodicChecks(symbol: string): Promise<void>;
 }
