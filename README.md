@@ -13,15 +13,19 @@ Navigate to the project folder and install the necessary dependencies:
 
 For the frontend:
 
-`cd frontend`
+```
+cd frontend
 
-`npm install`
+npm install
+```
 
 For the backend:
 
-`cd backend`
+```
+cd backend
 
-`npm install`
+npm install
+```
 
 ### 2. Start the Backend
 To start the backend server in development mode, run:
